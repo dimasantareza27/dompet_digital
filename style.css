@@ -1,0 +1,28 @@
+/* =============================================
+ * style.css
+ * File CSS tunggal untuk seluruh aplikasi.
+ * 
+ * TUGAS KAMU:
+ * 1. Reset dasar (margin, padding, box-sizing)
+ * 2. Layout utama menggunakan Flexbox / Grid
+ * 3. Style untuk:
+ *    a. Navbar / sidebar navigasi
+ *    b. Form (input, select, button, textarea)
+ *    c. Tabel data (striped rows, hover effect)
+ *    d. Kartu ringkasan (dashboard cards)
+ *    e. Bar chart CSS murni (grafik pemasukan vs pengeluaran)
+ *    f. Progress bar CSS (target tabungan & budget)
+ *    g. Alert / peringatan (sukses, warning, error)
+ *    h. Halaman login & register (centered card)
+ * 4. Responsif (media query untuk mobile)
+ * 5. @media print (di bagian paling bawah):
+ *    - Sembunyikan navbar, form filter, tombol cetak
+ *    - Tampilkan hanya konten laporan
+ * 
+ * CATATAN:
+ * - TIDAK BOLEH pakai framework CSS (Bootstrap, Tailwind, dll.)
+ * - TIDAK BOLEH pakai CDN (Google Fonts, FontAwesome, dll.)
+ * =============================================
+ */
+
+/* TODO: Mulai coding di sini! */
