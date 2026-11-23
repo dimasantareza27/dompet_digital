@@ -1,8 +1,6 @@
 # Product Requirements Document (PRD)
 ## Aplikasi Manajemen Keuangan Mahasiswa (100% Full Native — Versi Ringkas)
 
-> **INSTRUKSI UNTUK AI CODING AGENT:**
-> Dokumen ini adalah sumber kebenaran tunggal (*single source of truth*) untuk pengembangan proyek ini. Patuhi seluruh batasan teknis, struktur folder ringkas, skema database, dan ruang lingkup di bawah ini secara ketat. Fokus pada kode yang sederhana, bersih, mudah dibaca, dan **100% Full Native** tanpa *over-engineering*.
 
 ---
 
