@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['role']    = $user['role'];
 
         if ($user['role'] === 'admin') {
-            header('Location: /Sistem_Keuangan_Mahasiswa/admin/dashboard.php');
+            header("Location: {$base_path}/admin/dashboard.php");
         } else {
-            header('Location: /Sistem_Keuangan_Mahasiswa/mahasiswa/dashboard.php');
+            header("Location: {$base_path}/mahasiswa/dashboard.php");
         }
         exit;
     }

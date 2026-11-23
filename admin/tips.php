@@ -79,7 +79,7 @@ $hasil = mysqli_stmt_get_result($stmt);
 
         <label>Judul</label><br>
         <input type="text" name="judul" maxlength="150" required
-               value="<?= $edit ? htmlspecialchars($edit['judul']) : '' ?>"><br><br>
+            value="<?= $edit ? htmlspecialchars($edit['judul']) : '' ?>"><br><br>
 
         <label>Konten</label><br>
         <textarea name="konten" rows="4" cols="50" required><?= $edit ? htmlspecialchars($edit['konten']) : '' ?></textarea><br><br>

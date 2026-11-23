@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ubah_status'])) {
         $stmt = mysqli_prepare($koneksi,
             "UPDATE pengguna
-             SET status = IF(status = 'aktif', 'nonaktif', 'aktif')
-             WHERE id = ? AND role = 'mahasiswa'");
+            SET status = IF(status = 'aktif', 'nonaktif', 'aktif')
+            WHERE id = ? AND role = 'mahasiswa'");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $pesan = 'Status akun berhasil diubah.';
@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $stmt = mysqli_prepare($koneksi,
     "SELECT id, nama, email, status, created_at
-     FROM pengguna
-     WHERE role = 'mahasiswa'
-     ORDER BY created_at DESC");
+    FROM pengguna
+    WHERE role = 'mahasiswa'
+    ORDER BY created_at DESC");
 mysqli_stmt_execute($stmt);
 $hasil = mysqli_stmt_get_result($stmt);
 ?>

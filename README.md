@@ -5,7 +5,7 @@ Aplikasi web manajemen keuangan pribadi untuk mahasiswa. Dibangun dengan PHP Nat
 ## Tech Stack
 - **Frontend:** HTML5, CSS3 (tanpa framework)
 - **Backend:** PHP 8.x Native (prosedural)
-- **Database:** MySQL / MariaDB (mysqli)
+- **Database:** MySQL(mysqli)
 
 ## Setup
 1. Clone repo ini

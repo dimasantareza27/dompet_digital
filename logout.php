@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once 'config.php';
 session_destroy();
-header('Location: /Sistem_Keuangan_Mahasiswa/login.php');
+header("Location: {$base_path}/login.php");
 exit;

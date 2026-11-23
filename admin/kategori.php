@@ -85,7 +85,7 @@ $hasil = mysqli_stmt_get_result($stmt);
 
         <label>Nama Kategori</label><br>
         <input type="text" name="nama_kategori" required
-               value="<?= $edit ? htmlspecialchars($edit['nama_kategori']) : '' ?>"><br><br>
+            value="<?= $edit ? htmlspecialchars($edit['nama_kategori']) : '' ?>"><br><br>
 
         <label>Jenis</label><br>
         <select name="jenis">

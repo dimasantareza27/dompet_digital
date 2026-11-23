@@ -3,11 +3,11 @@ require_once 'config.php';
 
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['role'] === 'admin') {
-        header('Location: /Sistem_Keuangan_Mahasiswa/admin/dashboard.php');
+        header("Location: {$base_path}/admin/dashboard.php");
     } else {
-        header('Location: /Sistem_Keuangan_Mahasiswa/mahasiswa/dashboard.php');
+        header("Location: {$base_path}/mahasiswa/dashboard.php");
     }
 } else {
-    header('Location: /Sistem_Keuangan_Mahasiswa/login.php');
+    header("Location: {$base_path}/login.php");
 }
 exit;
