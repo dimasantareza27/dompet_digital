@@ -6,7 +6,7 @@ $user_id = $_SESSION['user_id'];
 $bulan   = (int) date('n');
 $tahun   = (int) date('Y');
 
-/* Helper: jalankan prepared statement SELECT, kembalikan 1 baris (array) atau null */
+
 function ambil_satu($koneksi, $sql, $tipe = '', $params = []) {
     $stmt = mysqli_prepare($koneksi, $sql);
     if ($tipe !== '') {
@@ -19,7 +19,7 @@ function ambil_satu($koneksi, $sql, $tipe = '', $params = []) {
     return $baris ?: null;
 }
 
-/* 1. Total saldo keseluruhan (pemasukan - pengeluaran) */
+
 $row = ambil_satu(
     $koneksi,
     "SELECT
@@ -32,7 +32,7 @@ $row = ambil_satu(
 );
 $total_saldo = (float) $row['total_masuk'] - (float) $row['total_keluar'];
 
-/* 2. Pemasukan & pengeluaran bulan ini */
+
 $row = ambil_satu(
     $koneksi,
     "SELECT
@@ -57,18 +57,18 @@ $anggaran = ambil_satu(
     [$user_id, $bulan, $tahun]
 );
 
-$persen_budget = null; // null = budget belum diatur
+$persen_budget = null; 
 if ($anggaran && (float) $anggaran['batas_nominal'] > 0) {
     $batas         = (float) $anggaran['batas_nominal'];
     $persen_budget = ($keluar_bulan_ini / $batas) * 100;
 }
 
-/* 4. Lebar bar chart CSS (relatif terhadap nilai terbesar, hindari bagi nol) */
+
 $nilai_maks   = max($masuk_bulan_ini, $keluar_bulan_ini);
 $lebar_masuk  = $nilai_maks > 0 ? round(($masuk_bulan_ini  / $nilai_maks) * 100, 1) : 0;
 $lebar_keluar = $nilai_maks > 0 ? round(($keluar_bulan_ini / $nilai_maks) * 100, 1) : 0;
 
-/* 5. Tips keuangan terbaru (tabel global, tidak punya kolom user_id) */
+
 $tips = ambil_satu(
     $koneksi,
     "SELECT judul, konten FROM tips_keuangan ORDER BY created_at DESC, id DESC LIMIT 1"
