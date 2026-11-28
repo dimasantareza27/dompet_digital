@@ -2,7 +2,7 @@
 session_start();
 
 // Koneksi Database (mendukung password 'root' atau tanpa password)
-$koneksi = @mysqli_connect('localhost', 'root', 'root', 'sistem_keuangan_mahasiswa');
+$koneksi = @mysqli_connect('localhost', 'root', '', 'sistem_keuangan_mahasiswa');
 if (!$koneksi) {
     $koneksi = @mysqli_connect('localhost', 'root', '', 'sistem_keuangan_mahasiswa');
 }

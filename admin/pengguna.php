@@ -139,7 +139,7 @@ mysqli_stmt_close($stmt);
                 </div>
 
                 <?php if ($pesan !== ''): ?>
-                    <div role="status" class="feedback-banner nb-shadow-sm flex">
+                    <div role="status" class="feedback-banner toast-fixed nb-shadow-sm flex">
                         <span class="material-symbols-outlined icon-18" aria-hidden="true">check_circle</span>
                         <span class="font-label text-label-lg"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></span>
                     </div>

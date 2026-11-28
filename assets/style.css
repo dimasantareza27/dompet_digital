@@ -1309,9 +1309,14 @@ hr {
     inset: 0;
     z-index: 50;
     background-color: rgba(0, 0, 0, 0.5);
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 16px;
+}
+
+.modal-backdrop.flex {
+    display: flex;
 }
 
 .modal-dialog {
@@ -1343,6 +1348,11 @@ hr {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+}
+
+.modal-icon--warning {
+    background-color: var(--warning);
+    color: var(--on-warning);
 }
 
 .modal-text {
@@ -1420,6 +1430,44 @@ hr {
     max-width: 24rem;
 }
 
+.toast-fixed,
+.toast-stack .toast-item {
+    transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.toast-fixed {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 60;
+    width: calc(100vw - 48px);
+    max-width: 24rem;
+}
+
+.toast-fixed.toast-dismiss,
+.toast-stack .toast-item.toast-dismiss {
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+}
+
+.feedback-banner.bg-error {
+    background-color: var(--error);
+    color: var(--on-error);
+}
+
+.feedback-banner.bg-warning {
+    background-color: var(--warning);
+    color: var(--on-warning);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast-fixed,
+    .toast-stack .toast-item {
+        transition: none;
+    }
+}
+
 .toast-item {
     display: flex;
     align-items: center;
@@ -1428,6 +1476,14 @@ hr {
     padding: 12px 16px;
     border: 2px solid var(--outline);
     border-radius: var(--radius-default);
+}
+
+@media (max-width: 480px) {
+    .toast-fixed {
+        right: 16px;
+        bottom: 16px;
+        width: calc(100vw - 32px);
+    }
 }
 
 .toast-close-btn {

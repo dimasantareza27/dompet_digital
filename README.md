@@ -15,6 +15,6 @@ Aplikasi web manajemen keuangan pribadi untuk mahasiswa. Dibangun dengan PHP Nat
 
 ## Akun Default
 - **Admin:** admin@keuangan.test / admin123
-
+- User 1 Mahasiswa@maha.siswa / Mahasiswa123
 ## Dokumentasi
 Baca `PRD.md` untuk spesifikasi lengkap.

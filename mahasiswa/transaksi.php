@@ -377,13 +377,13 @@ $tahunForm = $tahunFilter;
 
             <!-- Toast / Alerts -->
             <?php if ($pesan !== ''): ?>
-                <div role="status" class="toast-item nb-shadow bg-secondary" style="display:flex; align-items:center; gap:8px;">
+                <div role="status" class="toast-item toast-fixed nb-shadow bg-secondary" style="display:flex; align-items:center; gap:8px;">
                     <span class="material-symbols-outlined icon-18" aria-hidden="true">check_circle</span>
                     <span class="font-label text-label-lg"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
             <?php endif; ?>
             <?php if ($error !== ''): ?>
-                <div role="alert" class="toast-item nb-shadow bg-error" style="display:flex; align-items:center; gap:8px;">
+                <div role="alert" class="toast-item toast-fixed nb-shadow bg-error" style="display:flex; align-items:center; gap:8px;">
                     <span class="material-symbols-outlined icon-18" aria-hidden="true">error</span>
                     <span class="font-label text-label-lg"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
