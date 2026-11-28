@@ -314,156 +314,263 @@ $tahunForm = $tahunFilter;
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaksi - Keuangan Mahasiswa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
+
 <body>
-    <nav aria-label="Navigasi utama">
-        <a href="dashboard.php">Dashboard</a>
-        <a href="transaksi.php">Transaksi</a>
-        <a href="budget.php">Budget</a>
-        <a href="tabungan.php">Target Tabungan</a>
-        <a href="laporan.php">Laporan</a>
-        <a href="../logout.php">Keluar</a>
-    </nav>
+    <div class="page-shell nb-grid-bg">
+        <div class="page-container">
 
-    <main>
-        <h1>Transaksi</h1>
+            <!-- Top Navigation Bar (Shared Shell) -->
+            <header class="top-header nb-shadow-lg">
+                <a href="dashboard.php" class="brand-link">
+                    <div class="brand-icon nb-shadow-sm">
+                        <span class="material-symbols-outlined icon-22" aria-hidden="true">account_balance_wallet</span>
+                    </div>
+                    <div class="brand-text">
+                        <span class="font-headline text-headline-md leading-none">KEUANGAN.MHS</span>
+                        <span class="font-label text-label-sm uppercase text-muted">PORTAL MAHASISWA</span>
+                    </div>
+                </a>
 
-        <?php if ($pesan !== ''): ?>
-            <p role="status"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-        <?php if ($error !== ''): ?>
-            <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
+                <nav aria-label="Navigasi utama" class="main-nav">
+                    <a href="dashboard.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Dashboard</span>
+                    </a>
+                    <a href="transaksi.php" aria-current="page" class="nav-link nav-link--active font-label text-label-lg">
+                        <span class="font-label text-label-lg">Transaksi</span>
+                    </a>
+                    <a href="budget.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Budget</span>
+                    </a>
+                    <a href="tabungan.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Target Tabungan</span>
+                    </a>
+                    <a href="laporan.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Laporan</span>
+                    </a>
+                </nav>
 
-        <section>
-            <h2><?= $form['id'] === '' ? 'Tambah Transaksi' : 'Edit Transaksi' ?></h2>
-            <form method="post" action="transaksi.php">
-                <input type="hidden" name="id" value="<?= htmlspecialchars($form['id'], ENT_QUOTES, 'UTF-8') ?>">
+                <div class="header-actions">
+                    <a href="../logout.php" class="btn btn--card nb-shadow nb-press font-label text-label-lg">
+                        <span class="material-symbols-outlined icon-18" aria-hidden="true">logout</span>
+                        <span class="font-label text-label-lg">Keluar</span>
+                    </a>
+                </div>
+            </header>
 
-                <label for="jenis">Jenis</label>
-                <select id="jenis" name="jenis" required>
-                    <option value="pemasukan" <?= $form['jenis'] === 'pemasukan' ? 'selected' : '' ?>>Pemasukan</option>
-                    <option value="pengeluaran" <?= $form['jenis'] === 'pengeluaran' ? 'selected' : '' ?>>Pengeluaran</option>
-                </select>
+            <!-- Page Title -->
+            <div class="page-title-row">
+                <h1 class="font-display text-display-responsive">Transaksi Keuangan</h1>
+            </div>
 
-                <label for="kategori_id">Kategori</label>
-                <select id="kategori_id" name="kategori_id" required>
-                    <option value="">Pilih kategori</option>
-                    <?php foreach (['pemasukan' => 'Pemasukan', 'pengeluaran' => 'Pengeluaran'] as $jenisKategori => $labelJenis): ?>
-                        <optgroup label="<?= $labelJenis ?>">
-                            <?php foreach ($kategoriList as $kategori): ?>
-                                <?php if ($kategori['jenis'] === $jenisKategori): ?>
-                                    <option
-                                        value="<?= (int) $kategori['id'] ?>"
-                                        <?= (string) $kategori['id'] === $form['kategori_id'] ? 'selected' : '' ?>
-                                    >
-                                        <?= htmlspecialchars($kategori['nama_kategori'], ENT_QUOTES, 'UTF-8') ?>
-                                    </option>
-                                <?php endif; ?>
+            <!-- Toast / Alerts -->
+            <?php if ($pesan !== ''): ?>
+                <div role="status" class="toast-item nb-shadow bg-secondary" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">check_circle</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($error !== ''): ?>
+                <div role="alert" class="toast-item nb-shadow bg-error" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">error</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+            <?php endif; ?>
+
+            <!-- CRUD Form Card: Tambah / Edit Transaksi -->
+            <section class="panel-card nb-shadow-lg">
+                <header class="panel-header-lime">
+                    <h2 id="form-heading" class="font-headline text-headline-md">
+                        <?= $form['id'] === '' ? 'Tambah Transaksi' : 'Edit Transaksi' ?>
+                    </h2>
+                    <span class="font-label text-label-sm uppercase">INPUT MANUAL</span>
+                </header>
+
+                <form id="tx-form" class="tx-form" method="post" action="transaksi.php">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($form['id'], ENT_QUOTES, 'UTF-8') ?>">
+
+                    <div class="col-md-2 form-field">
+                        <label for="jenis" class="font-label text-label-lg">Jenis</label>
+                        <select id="jenis" name="jenis" required class="form-control nb-shadow-sm font-body text-body-md">
+                            <option value="pemasukan" <?= $form['jenis'] === 'pemasukan' ? 'selected' : '' ?>>Pemasukan</option>
+                            <option value="pengeluaran" <?= $form['jenis'] === 'pengeluaran' ? 'selected' : '' ?>>Pengeluaran</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-field">
+                        <label for="kategori_id" class="font-label text-label-lg">Kategori</label>
+                        <select id="kategori_id" name="kategori_id" required class="form-control nb-shadow-sm font-body text-body-md">
+                            <option value="">Pilih kategori</option>
+                            <?php foreach (['pemasukan' => 'Pemasukan', 'pengeluaran' => 'Pengeluaran'] as $jenisKategori => $labelJenis): ?>
+                                <optgroup label="<?= $labelJenis ?>">
+                                    <?php foreach ($kategoriList as $kategori): ?>
+                                        <?php if ($kategori['jenis'] === $jenisKategori): ?>
+                                            <option
+                                                value="<?= (int) $kategori['id'] ?>"
+                                                <?= (string) $kategori['id'] === $form['kategori_id'] ? 'selected' : '' ?>
+                                            >
+                                                <?= htmlspecialchars($kategori['nama_kategori'], ENT_QUOTES, 'UTF-8') ?>
+                                            </option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </optgroup>
                             <?php endforeach; ?>
-                        </optgroup>
-                    <?php endforeach; ?>
-                </select>
+                        </select>
+                    </div>
 
-                <label for="nominal">Nominal</label>
-                <input
-                    id="nominal"
-                    type="number"
-                    name="nominal"
-                    min="1"
-                    step="0.01"
-                    value="<?= htmlspecialchars($form['nominal'], ENT_QUOTES, 'UTF-8') ?>"
-                    required
-                >
+                    <div class="col-md-2 form-field">
+                        <label for="nominal" class="font-label text-label-lg">Nominal (Rp)</label>
+                        <input
+                            id="nominal"
+                            name="nominal"
+                            type="number"
+                            min="1"
+                            step="0.01"
+                            placeholder="35000"
+                            value="<?= htmlspecialchars($form['nominal'], ENT_QUOTES, 'UTF-8') ?>"
+                            required
+                            class="form-control nb-shadow-sm font-body text-body-md tabular-nums"
+                        >
+                    </div>
 
-                <label for="tanggal">Tanggal</label>
-                <input
-                    id="tanggal"
-                    type="date"
-                    name="tanggal"
-                    value="<?= htmlspecialchars($form['tanggal'], ENT_QUOTES, 'UTF-8') ?>"
-                    required
-                >
+                    <div class="col-md-2 form-field">
+                        <label for="tanggal" class="font-label text-label-lg">Tanggal</label>
+                        <input
+                            id="tanggal"
+                            name="tanggal"
+                            type="date"
+                            value="<?= htmlspecialchars($form['tanggal'], ENT_QUOTES, 'UTF-8') ?>"
+                            required
+                            class="form-control nb-shadow-sm font-body text-body-md"
+                        >
+                    </div>
 
-                <label for="catatan">Catatan</label>
-                <textarea id="catatan" name="catatan" maxlength="10000"><?= htmlspecialchars($form['catatan'], ENT_QUOTES, 'UTF-8') ?></textarea>
+                    <div class="col-md-3 form-field">
+                        <label for="catatan" class="font-label text-label-lg">Catatan</label>
+                        <input
+                            id="catatan"
+                            name="catatan"
+                            type="text"
+                            maxlength="10000"
+                            placeholder="Opsional: Makan siang kantin"
+                            value="<?= htmlspecialchars($form['catatan'], ENT_QUOTES, 'UTF-8') ?>"
+                            class="form-control nb-shadow-sm font-body text-body-md"
+                        >
+                    </div>
 
-                <button type="submit"><?= $form['id'] === '' ? 'Simpan' : 'Perbarui' ?></button>
-                <?php if ($form['id'] !== ''): ?>
-                    <a href="transaksi.php">Batal edit</a>
-                <?php endif; ?>
-            </form>
-        </section>
+                    <div class="col-md-12 form-actions">
+                        <?php if ($form['id'] !== ''): ?>
+                            <a href="transaksi.php" class="btn btn--card nb-shadow nb-press font-label text-label-lg">Batal Edit</a>
+                        <?php endif; ?>
+                        <button type="submit" class="btn btn--primary nb-shadow nb-press font-label text-label-lg">
+                            <span class="material-symbols-outlined icon-18" aria-hidden="true">save</span>
+                            <span class="font-label text-label-lg"><?= $form['id'] === '' ? 'Simpan Transaksi' : 'Perbarui Transaksi' ?></span>
+                        </button>
+                    </div>
+                </form>
+            </section>
 
-        <section>
-            <h2>Riwayat Transaksi</h2>
-            <form method="get" action="transaksi.php">
-                <label for="bulan">Bulan</label>
-                <select id="bulan" name="bulan">
-                    <option value="0" <?= $bulanForm === 0 ? 'selected' : '' ?>>Semua bulan</option>
-                    <?php foreach ($namaBulan as $nomorBulan => $labelBulan): ?>
-                        <option value="<?= $nomorBulan ?>" <?= $nomorBulan === $bulanForm ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($labelBulan, ENT_QUOTES, 'UTF-8') ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+            <!-- Table & Filter Section -->
+            <section class="panel-card nb-shadow-lg">
+                <div class="panel-header-beige">
+                    <h2 class="font-headline text-headline-md">Riwayat Transaksi</h2>
 
-                <label for="tahun">Tahun</label>
-                <select id="tahun" name="tahun">
-                    <?php for ($tahun = $tahunMinimum; $tahun <= $tahunSekarang + 1; $tahun++): ?>
-                        <option value="<?= $tahun ?>" <?= $tahun === $tahunForm ? 'selected' : '' ?>>
-                            <?= $tahun ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
+                    <!-- Filter Bar -->
+                    <form method="get" action="transaksi.php" class="filter-bar">
+                        <select id="bulan" name="bulan" aria-label="Filter bulan" class="filter-select nb-shadow-sm font-body text-body-md">
+                            <option value="0" <?= $bulanForm === 0 ? 'selected' : '' ?>>Semua bulan</option>
+                            <?php foreach ($namaBulan as $nomorBulan => $labelBulan): ?>
+                                <option value="<?= $nomorBulan ?>" <?= $nomorBulan === $bulanForm ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($labelBulan, ENT_QUOTES, 'UTF-8') ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <select id="tahun" name="tahun" aria-label="Filter tahun" class="filter-select nb-shadow-sm font-body text-body-md">
+                            <?php for ($tahun = $tahunMinimum; $tahun <= $tahunSekarang + 1; $tahun++): ?>
+                                <option value="<?= $tahun ?>" <?= $tahun === $tahunForm ? 'selected' : '' ?>>
+                                    <?= $tahun ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                        <select id="filter_jenis" name="filter_jenis" aria-label="Filter jenis" class="filter-select nb-shadow-sm font-body text-body-md">
+                            <option value="" <?= $jenisFilter === '' ? 'selected' : '' ?>>Semua jenis</option>
+                            <option value="pemasukan" <?= $jenisFilter === 'pemasukan' ? 'selected' : '' ?>>Pemasukan</option>
+                            <option value="pengeluaran" <?= $jenisFilter === 'pengeluaran' ? 'selected' : '' ?>>Pengeluaran</option>
+                        </select>
+                        <button type="submit" class="btn btn--card nb-shadow-sm nb-press font-label text-label-lg" style="min-height: 44px;">Filter</button>
+                    </form>
+                </div>
 
-                <label for="filter_jenis">Jenis</label>
-                <select id="filter_jenis" name="filter_jenis">
-                    <option value="" <?= $jenisFilter === '' ? 'selected' : '' ?>>Semua jenis</option>
-                    <option value="pemasukan" <?= $jenisFilter === 'pemasukan' ? 'selected' : '' ?>>Pemasukan</option>
-                    <option value="pengeluaran" <?= $jenisFilter === 'pengeluaran' ? 'selected' : '' ?>>Pengeluaran</option>
-                </select>
-                <button type="submit">Filter</button>
-            </form>
+                <div class="table-wrap">
+                    <table class="tx-table">
+                        <thead>
+                            <tr>
+                                <th scope="col"><span class="font-label text-label-sm uppercase">Tanggal</span></th>
+                                <th scope="col"><span class="font-label text-label-sm uppercase">Kategori</span></th>
+                                <th scope="col"><span class="font-label text-label-sm uppercase">Jenis</span></th>
+                                <th scope="col" class="text-right"><span class="font-label text-label-sm uppercase">Nominal</span></th>
+                                <th scope="col"><span class="font-label text-label-sm uppercase">Catatan</span></th>
+                                <th scope="col" class="text-right"><span class="font-label text-label-sm uppercase">Aksi</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tx-tbody">
+                            <?php if (!$transaksiList): ?>
+                                <tr>
+                                    <td colspan="6" class="empty-cell">
+                                        <span class="font-body text-body-md text-muted">Belum ada transaksi pada filter ini.</span>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($transaksiList as $transaksi): ?>
+                                    <tr data-jenis="<?= htmlspecialchars($transaksi['jenis'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <td><?= htmlspecialchars($transaksi['tanggal'], ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td><?= htmlspecialchars($transaksi['nama_kategori'] ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td>
+                                            <span class="badge-status font-label text-label-sm uppercase <?= $transaksi['jenis'] === 'pemasukan' ? 'bg-secondary' : 'bg-warning' ?>">
+                                                <?= htmlspecialchars(ucfirst($transaksi['jenis']), ENT_QUOTES, 'UTF-8') ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-right tabular-nums" style="font-weight: 700;">
+                                            <?= ($transaksi['jenis'] === 'pemasukan' ? '+ ' : '- ') . format_rupiah($transaksi['nominal']) ?>
+                                        </td>
+                                        <td><?= nl2br(htmlspecialchars($transaksi['catatan'] ?? '', ENT_QUOTES, 'UTF-8')) ?></td>
+                                        <td class="text-right">
+                                            <div style="display:inline-flex; gap:8px;">
+                                                <a href="transaksi.php?edit=<?= (int) $transaksi['id'] ?>" class="btn btn--card nb-shadow-sm nb-press font-label text-label-sm" style="min-height:32px; padding:4px 10px;">Edit</a>
+                                                <a
+                                                    href="transaksi.php?hapus=<?= (int) $transaksi['id'] ?>"
+                                                    onclick="return confirm('Yakin ingin menghapus data ini?')"
+                                                    class="btn btn--error nb-shadow-sm nb-press font-label text-label-sm"
+                                                    style="min-height:32px; padding:4px 10px;"
+                                                >Hapus</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Kategori</th>
-                        <th>Jenis</th>
-                        <th>Nominal</th>
-                        <th>Catatan</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!$transaksiList): ?>
-                        <tr><td colspan="6">Belum ada transaksi pada filter ini.</td></tr>
-                    <?php endif; ?>
-                    <?php foreach ($transaksiList as $transaksi): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($transaksi['tanggal'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars($transaksi['nama_kategori'] ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars(ucfirst($transaksi['jenis']), ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= format_rupiah($transaksi['nominal']) ?></td>
-                            <td><?= nl2br(htmlspecialchars($transaksi['catatan'] ?? '', ENT_QUOTES, 'UTF-8')) ?></td>
-                            <td>
-                                <a href="transaksi.php?edit=<?= (int) $transaksi['id'] ?>">Edit</a>
-                                <a
-                                    href="transaksi.php?hapus=<?= (int) $transaksi['id'] ?>"
-                                    onclick="return confirm('Yakin ingin menghapus data ini?')"
-                                >Hapus</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </section>
-    </main>
+    <!-- Global Toast Notification Stack -->
+    <div id="nb-toast-stack" class="hidden toast-stack"></div>
+
+    <script src="../assets/app.js"></script>
 </body>
+
 </html>

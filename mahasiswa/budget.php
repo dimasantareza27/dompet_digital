@@ -127,77 +127,194 @@ $sisaBudget = $batasAnggaran - $totalPengeluaran;
 if ($persentase >= 100) {
     $statusBudget = 'Melebihi Batas';
     $warnaProgress = '#dc3545';
+    $badgeClass = 'bg-error text-on-error';
 } elseif ($persentase >= 80) {
     $statusBudget = 'Peringatan';
     $warnaProgress = '#ffc107';
+    $badgeClass = 'bg-warning text-on-warning';
 } else {
     $statusBudget = 'Aman';
-    $warnaProgress = '#198754';
+    $warnaProgress = '#00C2CB';
+    $badgeClass = 'bg-secondary text-on-secondary';
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Bulanan - Keuangan Mahasiswa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
+
 <body>
-    <nav aria-label="Navigasi utama">
-        <a href="dashboard.php">Dashboard</a>
-        <a href="transaksi.php">Transaksi</a>
-        <a href="budget.php">Budget</a>
-        <a href="tabungan.php">Target Tabungan</a>
-        <a href="laporan.php">Laporan</a>
-        <a href="../logout.php">Keluar</a>
-    </nav>
+    <div class="page-shell nb-grid-bg">
+        <div class="page-container">
 
-    <main>
-        <h1>Budget Bulan <?= htmlspecialchars($namaBulan[$bulanIni] . ' ' . $tahunIni, ENT_QUOTES, 'UTF-8') ?></h1>
+            <!-- Top Navigation Bar (Shared Shell) -->
+            <header class="top-header nb-shadow-lg">
+                <a href="dashboard.php" class="brand-link">
+                    <div class="brand-icon nb-shadow-sm">
+                        <span class="material-symbols-outlined icon-22" aria-hidden="true">account_balance_wallet</span>
+                    </div>
+                    <div class="brand-text">
+                        <span class="font-headline text-headline-md leading-none">KEUANGAN.MHS</span>
+                        <span class="font-label text-label-sm uppercase text-muted">PORTAL MAHASISWA</span>
+                    </div>
+                </a>
 
-        <?php if ($pesan !== ''): ?>
-            <p role="status"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-        <?php if ($error !== ''): ?>
-            <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
+                <nav aria-label="Navigasi utama" class="main-nav">
+                    <a href="dashboard.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Dashboard</span>
+                    </a>
+                    <a href="transaksi.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Transaksi</span>
+                    </a>
+                    <a href="budget.php" aria-current="page" class="nav-link nav-link--active font-label text-label-lg">
+                        <span class="font-label text-label-lg">Budget</span>
+                    </a>
+                    <a href="tabungan.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Target Tabungan</span>
+                    </a>
+                    <a href="laporan.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Laporan</span>
+                    </a>
+                </nav>
 
-        <form method="post" action="budget.php">
-            <label for="batas_nominal">Batas pengeluaran bulan ini</label>
-            <input
-                id="batas_nominal"
-                type="number"
-                name="batas_nominal"
-                min="1"
-                step="0.01"
-                value="<?= htmlspecialchars($batasForm, ENT_QUOTES, 'UTF-8') ?>"
-                required
-            >
-            <button type="submit">Simpan Budget</button>
-        </form>
-
-        <section aria-label="Realisasi budget">
-            <?php if ($batasAnggaran > 0): ?>
-                <h2>Status: <?= htmlspecialchars($statusBudget, ENT_QUOTES, 'UTF-8') ?></h2>
-                <p>Batas budget: <?= format_rupiah($batasAnggaran) ?></p>
-                <p>Total pengeluaran: <?= format_rupiah($totalPengeluaran) ?></p>
-                <p>Sisa budget: <?= format_rupiah($sisaBudget) ?></p>
-                <p>Penggunaan: <?= $persentaseTampil ?>%</p>
-                <div
-                    role="progressbar"
-                    aria-label="Persentase penggunaan budget"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-valuenow="<?= $lebarProgress ?>"
-                    style="width: 100%; height: 20px; background-color: #e9ecef;"
-                >
-                    <div style="width: <?= $lebarProgress ?>%; height: 20px; background-color: <?= $warnaProgress ?>;"></div>
+                <div class="header-actions">
+                    <a href="../logout.php" class="btn btn--card nb-shadow nb-press font-label text-label-lg">
+                        <span class="material-symbols-outlined icon-18" aria-hidden="true">logout</span>
+                        <span class="font-label text-label-lg">Keluar</span>
+                    </a>
                 </div>
-            <?php else: ?>
-                <h2>Belum ada budget untuk bulan ini</h2>
-                <p>Total pengeluaran: <?= format_rupiah($totalPengeluaran) ?></p>
+            </header>
+
+            <!-- Page Title -->
+            <div class="page-title-row">
+                <h1 class="font-display text-display-responsive">
+                    Budget Bulan <?= htmlspecialchars($namaBulan[$bulanIni] . ' ' . $tahunIni, ENT_QUOTES, 'UTF-8') ?>
+                </h1>
+                <span class="pill-badge-beige font-label text-label-sm uppercase">1 BATAS TOTAL PER BULAN</span>
+            </div>
+
+            <!-- Toast / Alerts -->
+            <?php if ($pesan !== ''): ?>
+                <div role="status" class="toast-item nb-shadow bg-secondary" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">check_circle</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
             <?php endif; ?>
-        </section>
-    </main>
+            <?php if ($error !== ''): ?>
+                <div role="alert" class="toast-item nb-shadow bg-error" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">error</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+            <?php endif; ?>
+
+            <!-- 2-Column Bento Grid -->
+            <main class="budget-grid">
+
+                <!-- Left 5 Cols: Set Monthly Limit Form -->
+                <section class="col-lg-5 panel-card nb-shadow-lg">
+                    <header class="panel-header-beige">
+                        <h2 class="font-headline text-headline-md">Atur Batas Pengeluaran</h2>
+                    </header>
+
+                    <form id="budget-form" class="budget-form" method="post" action="budget.php">
+                        <div class="form-field">
+                            <label for="batas_nominal" class="font-label text-label-lg">Batas pengeluaran bulan ini (Rp)</label>
+                            <input
+                                id="batas_nominal"
+                                name="batas_nominal"
+                                type="number"
+                                min="1"
+                                step="0.01"
+                                placeholder="Masukkan batas pengeluaran"
+                                value="<?= htmlspecialchars($batasForm, ENT_QUOTES, 'UTF-8') ?>"
+                                required
+                                class="budget-input nb-shadow-sm font-headline text-headline-md tabular-nums"
+                            >
+                        </div>
+
+                        <button type="submit" class="btn btn--full btn--primary nb-shadow nb-press font-label text-label-lg">
+                            <span class="material-symbols-outlined icon-18" aria-hidden="true">save</span>
+                            <span class="font-label text-label-lg">Simpan Budget</span>
+                        </button>
+
+                        <div class="rules-box">
+                            <span class="font-label text-label-sm uppercase">ATURAN INDIKATOR WARNA</span>
+                            <div class="rules-chips">
+                                <span class="rule-chip bg-secondary font-label text-label-sm">&lt; 80% AMAN</span>
+                                <span class="rule-chip bg-warning font-label text-label-sm">80–99% PERINGATAN</span>
+                                <span class="rule-chip bg-error font-label text-label-sm">&gt;= 100% MELEBIHI</span>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Right 7 Cols: Budget Realization & Progress Bar -->
+                <section aria-label="Realisasi budget" class="col-lg-7 realization-card nb-shadow-lg">
+                    <header class="realization-header">
+                        <h2 class="font-headline text-headline-md">
+                            <?= $batasAnggaran > 0 ? 'Status: ' . htmlspecialchars($statusBudget, ENT_QUOTES, 'UTF-8') : 'Belum ada budget untuk bulan ini' ?>
+                        </h2>
+                        <span id="budget-badge" role="status" class="budget-badge <?= $badgeClass ?> font-label text-label-sm uppercase">
+                            <span id="budget-status-text" class="font-label text-label-sm">
+                                <?= $batasAnggaran > 0 ? strtoupper(htmlspecialchars($statusBudget, ENT_QUOTES, 'UTF-8')) : 'BELUM DIATUR' ?>
+                            </span>
+                        </span>
+                    </header>
+
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <span class="font-label text-label-sm uppercase text-muted">BATAS BUDGET</span>
+                            <span id="disp-batas" class="font-headline text-headline-md tabular-nums">
+                                <?= format_rupiah($batasAnggaran) ?>
+                            </span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="font-label text-label-sm uppercase text-muted">TOTAL PENGELUARAN</span>
+                            <span class="font-headline text-headline-md tabular-nums">
+                                <?= format_rupiah($totalPengeluaran) ?>
+                            </span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="font-label text-label-sm uppercase text-muted">SISA BUDGET</span>
+                            <span id="disp-sisa" class="font-headline text-headline-md tabular-nums">
+                                <?= format_rupiah($sisaBudget) ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="font-headline text-title-md">Persentase Penggunaan</span>
+                            <span id="disp-pct" class="font-display text-display-lg-mobile tabular-nums">
+                                <?= $persentaseTampil ?>%
+                            </span>
+                        </div>
+                        <div role="progressbar" aria-label="Persentase penggunaan budget" aria-valuemin="0"
+                            aria-valuemax="100" aria-valuenow="<?= $lebarProgress ?>" class="progress-track">
+                            <div id="budget-bar" class="progress-fill" style="width: <?= $lebarProgress ?>%; background-color: <?= $warnaProgress ?>;"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Global Toast Notification Stack -->
+    <div id="nb-toast-stack" class="hidden toast-stack"></div>
+
+    <script src="../assets/app.js"></script>
 </body>
+
 </html>

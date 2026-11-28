@@ -232,123 +232,245 @@ mysqli_stmt_close($stmt);
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Target Tabungan - Keuangan Mahasiswa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
+
 <body>
-    <main>
-        <h1>Target Tabungan</h1>
+    <div class="page-shell nb-grid-bg">
+        <div class="page-container">
 
-        <?php if ($pesan !== ''): ?>
-            <p role="status"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-        <?php if ($error !== ''): ?>
-            <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
+            <!-- Top Navigation Bar (Shared Shell) -->
+            <header class="top-header nb-shadow-lg">
+                <a href="dashboard.php" class="brand-link">
+                    <div class="brand-icon nb-shadow-sm">
+                        <span class="material-symbols-outlined icon-22" aria-hidden="true">account_balance_wallet</span>
+                    </div>
+                    <div class="brand-text">
+                        <span class="font-headline text-headline-md leading-none">KEUANGAN.MHS</span>
+                        <span class="font-label text-label-sm uppercase text-muted">PORTAL MAHASISWA</span>
+                    </div>
+                </a>
 
-        <section>
-            <h2><?= $form['id'] === '' ? 'Tambah Target' : 'Edit Target' ?></h2>
-            <form method="post" action="tabungan.php">
-                <input type="hidden" name="aksi" value="<?= $form['id'] === '' ? 'tambah' : 'edit' ?>">
-                <input type="hidden" name="id" value="<?= htmlspecialchars($form['id'], ENT_QUOTES, 'UTF-8') ?>">
+                <nav aria-label="Navigasi utama" class="main-nav">
+                    <a href="dashboard.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Dashboard</span>
+                    </a>
+                    <a href="transaksi.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Transaksi</span>
+                    </a>
+                    <a href="budget.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Budget</span>
+                    </a>
+                    <a href="tabungan.php" aria-current="page" class="nav-link nav-link--active font-label text-label-lg">
+                        <span class="font-label text-label-lg">Target Tabungan</span>
+                    </a>
+                    <a href="laporan.php" class="nav-link font-label text-label-lg">
+                        <span class="font-label text-label-lg">Laporan</span>
+                    </a>
+                </nav>
 
-                <label for="nama_target">Nama target</label>
-                <input
-                    id="nama_target"
-                    type="text"
-                    name="nama_target"
-                    maxlength="100"
-                    value="<?= htmlspecialchars($form['nama_target'], ENT_QUOTES, 'UTF-8') ?>"
-                    required
-                >
+                <div class="header-actions">
+                    <a href="../logout.php" class="btn btn--card nb-shadow nb-press font-label text-label-lg">
+                        <span class="material-symbols-outlined icon-18" aria-hidden="true">logout</span>
+                        <span class="font-label text-label-lg">Keluar</span>
+                    </a>
+                </div>
+            </header>
 
-                <label for="target_nominal">Target nominal</label>
-                <input
-                    id="target_nominal"
-                    type="number"
-                    name="target_nominal"
-                    min="1"
-                    step="0.01"
-                    value="<?= htmlspecialchars($form['target_nominal'], ENT_QUOTES, 'UTF-8') ?>"
-                    required
-                >
+            <h1 class="font-display text-display-responsive">Target Tabungan</h1>
 
-                <label for="tenggat_tanggal">Tenggat tanggal (opsional)</label>
-                <input
-                    id="tenggat_tanggal"
-                    type="date"
-                    name="tenggat_tanggal"
-                    value="<?= htmlspecialchars($form['tenggat_tanggal'], ENT_QUOTES, 'UTF-8') ?>"
-                >
-                <button type="submit"><?= $form['id'] === '' ? 'Tambah Target' : 'Simpan Perubahan' ?></button>
-                <?php if ($form['id'] !== ''): ?>
-                    <a href="tabungan.php">Batal edit</a>
-                <?php endif; ?>
-            </form>
-        </section>
-
-        <section>
-            <h2>Daftar Target</h2>
-            <?php if (!$targetList): ?>
-                <p>Belum ada target tabungan.</p>
+            <!-- Toast / Alerts -->
+            <?php if ($pesan !== ''): ?>
+                <div role="status" class="toast-item nb-shadow bg-secondary" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">check_circle</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($error !== ''): ?>
+                <div role="alert" class="toast-item nb-shadow bg-error" style="display:flex; align-items:center; gap:8px;">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">error</span>
+                    <span class="font-label text-label-lg"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
             <?php endif; ?>
 
-            <?php foreach ($targetList as $target): ?>
-                <?php
-                $targetNominal = (float) $target['target_nominal'];
-                $terkumpul = (float) $target['terkumpul_nominal'];
-                $sisa = max(0, $targetNominal - $terkumpul);
-                $persentase = $targetNominal > 0
-                    ? min(100, max(0, ($terkumpul / $targetNominal) * 100))
-                    : 0;
-                $statusTampil = $target['status'] === 'tercapai' ? 'Tercapai' : 'Berjalan';
-                ?>
-                <article>
-                    <h3><?= htmlspecialchars($target['nama_target'], ENT_QUOTES, 'UTF-8') ?></h3>
-                    <p>Target: <?= format_rupiah($target['target_nominal']) ?></p>
-                    <p>Terkumpul: <?= format_rupiah($target['terkumpul_nominal']) ?></p>
-                    <p>Sisa: <?= format_rupiah($sisa) ?></p>
-                    <p>Status: <?= htmlspecialchars($statusTampil, ENT_QUOTES, 'UTF-8') ?></p>
-                    <?php if ($target['tenggat_tanggal'] !== null): ?>
-                        <p>Tenggat: <?= htmlspecialchars($target['tenggat_tanggal'], ENT_QUOTES, 'UTF-8') ?></p>
-                    <?php endif; ?>
-                    <div
-                        role="progressbar"
-                        aria-label="Progress <?= htmlspecialchars($target['nama_target'], ENT_QUOTES, 'UTF-8') ?>"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        aria-valuenow="<?= round($persentase, 2) ?>"
-                        style="width: 100%; height: 20px; background-color: #e9ecef;"
-                    >
-                        <div style="width: <?= round($persentase, 2) ?>%; height: 20px; background-color: #198754;"></div>
+            <!-- Form Tambah / Edit Target -->
+            <section class="panel-card nb-shadow-lg">
+                <header class="panel-header-lime">
+                    <h2 class="font-headline text-headline-md">
+                        <?= $form['id'] === '' ? 'Tambah Target Baru' : 'Edit Target Tabungan' ?>
+                    </h2>
+                </header>
+
+                <form class="target-form" method="post" action="tabungan.php">
+                    <input type="hidden" name="aksi" value="<?= $form['id'] === '' ? 'tambah' : 'edit' ?>">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($form['id'], ENT_QUOTES, 'UTF-8') ?>">
+
+                    <div class="col-md-5 form-field">
+                        <label for="nama_target" class="font-label text-label-lg">Nama Target</label>
+                        <input
+                            id="nama_target"
+                            name="nama_target"
+                            type="text"
+                            maxlength="100"
+                            placeholder="Contoh: Laptop Kuliah Baru"
+                            value="<?= htmlspecialchars($form['nama_target'], ENT_QUOTES, 'UTF-8') ?>"
+                            required
+                            class="form-control nb-shadow-sm font-body text-body-md"
+                        >
                     </div>
 
-                    <?php if ($target['status'] === 'berjalan'): ?>
-                        <form method="post" action="tabungan.php">
-                            <input type="hidden" name="aksi" value="setoran">
-                            <input type="hidden" name="id" value="<?= (int) $target['id'] ?>">
-                            <label for="setoran_<?= (int) $target['id'] ?>">Tambah Setoran</label>
-                            <input
-                                id="setoran_<?= (int) $target['id'] ?>"
-                                type="number"
-                                name="nominal_setoran"
-                                min="1"
-                                step="0.01"
-                                required
-                            >
-                            <button type="submit">Setor</button>
-                        </form>
-                    <?php endif; ?>
-                    <a href="tabungan.php?edit=<?= (int) $target['id'] ?>">Edit</a>
-                    <a
-                        href="tabungan.php?hapus=<?= (int) $target['id'] ?>"
-                        onclick="return confirm('Yakin ingin menghapus data ini?')"
-                    >Hapus</a>
-                </article>
-            <?php endforeach; ?>
-        </section>
-    </main>
+                    <div class="col-md-3 form-field">
+                        <label for="target_nominal" class="font-label text-label-lg">Target Nominal (Rp)</label>
+                        <input
+                            id="target_nominal"
+                            name="target_nominal"
+                            type="number"
+                            min="1"
+                            step="0.01"
+                            placeholder="12000000"
+                            value="<?= htmlspecialchars($form['target_nominal'], ENT_QUOTES, 'UTF-8') ?>"
+                            required
+                            class="form-control nb-shadow-sm font-body text-body-md tabular-nums"
+                        >
+                    </div>
+
+                    <div class="col-md-2 form-field">
+                        <label for="tenggat_tanggal" class="font-label text-label-lg">Tenggat (Opsional)</label>
+                        <input
+                            id="tenggat_tanggal"
+                            name="tenggat_tanggal"
+                            type="date"
+                            value="<?= htmlspecialchars($form['tenggat_tanggal'], ENT_QUOTES, 'UTF-8') ?>"
+                            class="form-control nb-shadow-sm font-body text-body-md"
+                        >
+                    </div>
+
+                    <div class="col-md-2" style="display:flex; flex-direction:column; gap:6px;">
+                        <?php if ($form['id'] !== ''): ?>
+                            <a href="tabungan.php" class="btn btn--card nb-shadow-sm nb-press font-label text-label-sm" style="text-align:center;">Batal</a>
+                        <?php endif; ?>
+                        <button type="submit" class="btn btn--full btn--primary nb-shadow nb-press font-label text-label-lg">
+                            <span class="font-label text-label-lg"><?= $form['id'] === '' ? 'Tambah Target' : 'Simpan' ?></span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Daftar Target Tabungan -->
+            <section aria-label="Daftar target tabungan">
+                <?php if (!$targetList): ?>
+                    <div class="empty-state-card nb-shadow-lg" style="background-color: var(--light-surface-card); border: 2px solid var(--outline); border-radius: var(--radius-md); padding: 48px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                        <span class="material-symbols-outlined icon-32 text-muted" aria-hidden="true" style="font-size: 48px;">savings</span>
+                        <h2 class="font-headline text-headline-md">Belum ada target tabungan.</h2>
+                        <p class="font-body text-body-md text-muted">Gunakan formulir di atas untuk menambahkan target tabungan pertama Anda.</p>
+                    </div>
+                <?php else: ?>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <?php foreach ($targetList as $target): ?>
+                            <?php
+                            $targetNominal = (float) $target['target_nominal'];
+                            $terkumpul = (float) $target['terkumpul_nominal'];
+                            $sisa = max(0, $targetNominal - $terkumpul);
+                            $persentase = $targetNominal > 0
+                                ? min(100, max(0, ($terkumpul / $targetNominal) * 100))
+                                : 0;
+                            $statusTampil = $target['status'] === 'tercapai' ? 'Tercapai' : 'Berjalan';
+                            ?>
+                            <article class="panel-card nb-shadow-lg">
+                                <header class="panel-header-beige" style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <h2 class="font-headline text-headline-md"><?= htmlspecialchars($target['nama_target'], ENT_QUOTES, 'UTF-8') ?></h2>
+                                        <span class="badge-status font-label text-label-sm uppercase <?= $target['status'] === 'tercapai' ? 'bg-secondary' : 'bg-primary' ?>">
+                                            <?= htmlspecialchars($statusTampil, ENT_QUOTES, 'UTF-8') ?>
+                                        </span>
+                                    </div>
+                                    <div style="display: inline-flex; gap: 8px;">
+                                        <a href="tabungan.php?edit=<?= (int) $target['id'] ?>" class="btn btn--card nb-shadow-sm nb-press font-label text-label-sm" style="min-height: 36px; padding: 4px 12px;">Edit</a>
+                                        <a
+                                            href="tabungan.php?hapus=<?= (int) $target['id'] ?>"
+                                            onclick="return confirm('Yakin ingin menghapus data ini?')"
+                                            class="btn btn--error nb-shadow-sm nb-press font-label text-label-sm"
+                                            style="min-height: 36px; padding: 4px 12px;"
+                                        >Hapus</a>
+                                    </div>
+                                </header>
+
+                                <div style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+                                    <div class="stat-grid">
+                                        <div class="stat-box">
+                                            <span class="font-label text-label-sm uppercase text-muted">TARGET NOMINAL</span>
+                                            <span class="font-headline text-headline-md tabular-nums"><?= format_rupiah($target['target_nominal']) ?></span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="font-label text-label-sm uppercase text-muted">TERKUMPUL</span>
+                                            <span class="font-headline text-headline-md tabular-nums"><?= format_rupiah($target['terkumpul_nominal']) ?></span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="font-label text-label-sm uppercase text-muted">SISA</span>
+                                            <span class="font-headline text-headline-md tabular-nums"><?= format_rupiah($sisa) ?></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-section">
+                                        <div class="progress-header">
+                                            <span class="font-headline text-title-md">Progress: <?= round($persentase, 2) ?>%</span>
+                                            <?php if ($target['tenggat_tanggal'] !== null): ?>
+                                                <span class="font-label text-label-sm uppercase text-muted">Tenggat: <?= htmlspecialchars($target['tenggat_tanggal'], ENT_QUOTES, 'UTF-8') ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div role="progressbar" aria-label="Progress <?= htmlspecialchars($target['nama_target'], ENT_QUOTES, 'UTF-8') ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?= round($persentase, 2) ?>" class="progress-track">
+                                            <div class="progress-fill <?= $target['status'] === 'tercapai' ? 'bg-secondary' : 'bg-primary' ?>" style="width: <?= round($persentase, 2) ?>%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <?php if ($target['status'] === 'berjalan'): ?>
+                                        <div style="padding-top: 16px; border-top: 2px solid var(--outline);">
+                                            <form method="post" action="tabungan.php" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                                                <input type="hidden" name="aksi" value="setoran">
+                                                <input type="hidden" name="id" value="<?= (int) $target['id'] ?>">
+                                                <label for="setoran_<?= (int) $target['id'] ?>" class="font-label text-label-lg">Tambah Setoran (Rp):</label>
+                                                <input
+                                                    id="setoran_<?= (int) $target['id'] ?>"
+                                                    type="number"
+                                                    name="nominal_setoran"
+                                                    min="1"
+                                                    step="0.01"
+                                                    placeholder="Contoh: 50000"
+                                                    required
+                                                    class="form-control nb-shadow-sm font-body text-body-md tabular-nums"
+                                                    style="max-width: 260px; min-height: 40px;"
+                                                >
+                                                <button type="submit" class="btn btn--lime nb-shadow nb-press font-label text-label-lg" style="min-height: 40px;">
+                                                    <span class="material-symbols-outlined icon-18" aria-hidden="true">add_circle</span>
+                                                    <span>Setor</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+        </div>
+    </div>
+
+    <!-- Global Toast Notification Stack -->
+    <div id="nb-toast-stack" class="hidden toast-stack"></div>
+
+    <script src="../assets/app.js"></script>
 </body>
+
 </html>
